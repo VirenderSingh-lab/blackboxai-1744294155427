@@ -1,5 +1,6 @@
 package com.imageeditor
 
+import android.graphics.Bitmap
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +22,7 @@ class FilterAdapter(
 
     private var selectedFilter = FilterType.ORIGINAL
     private var currentImageUri: Uri? = null
+    private val previewBitmaps = mutableMapOf<FilterType, Bitmap>()
 
     inner class FilterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val preview: ImageView = itemView.findViewById(R.id.filterPreview)
@@ -59,6 +61,15 @@ class FilterAdapter(
         // Show selected state
         holder.overlay.visibility = if (filter == selectedFilter) View.VISIBLE else View.GONE
 
+        // Set preview image if available
+        previewBitmaps[filter]?.let { bitmap ->
+            holder.preview.setImageBitmap(bitmap)
+            holder.progress.visibility = View.GONE
+        } ?: run {
+            holder.preview.setImageBitmap(null)
+            holder.progress.visibility = View.VISIBLE
+        }
+
         // Click listener
         holder.itemView.setOnClickListener {
             onFilterSelected(filter)
@@ -79,11 +90,13 @@ class FilterAdapter(
     suspend fun updatePreviews(uri: Uri, imageProcessor: ImageProcessor) = withContext(Dispatchers.Main) {
         currentImageUri = uri
         
-        filters.forEachIndexed { index, filter ->
-            val holder = getViewHolder(index)
-            holder?.let {
-                it.progress.visibility = View.VISIBLE
-                it.preview.setImageBitmap(null)
+        // Create a map to store the preview bitmaps
+        val previewBitmaps = mutableMapOf<FilterType, Bitmap>()
+        
+        // Generate all previews in background
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val originalBitmap = imageProcessor.loadImage(uri)
                 
                 // Generate filter preview in background
                 CoroutineScope(Dispatchers.IO).launch {
@@ -100,6 +113,17 @@ class FilterAdapter(
                             it.progress.visibility = View.GONE
                         }
                     }
+                }
+                
+                // Update UI with all previews
+                withContext(Dispatchers.Main) {
+                    // Notify adapter that data has changed
+                    notifyDataSetChanged()
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    // Hide all progress bars
+                    notifyDataSetChanged()
                 }
             }
         }
