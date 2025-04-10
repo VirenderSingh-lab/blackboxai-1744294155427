@@ -48,7 +48,8 @@ class ImageProcessor(private val context: Context) {
         }
     }
 
-    fun applyFilter(filterType: FilterType): Bitmap? {
+    fun applyFilter(filterType: FilterType, bitmap: Bitmap): Bitmap? {
+        gpuImage.setImage(bitmap)
         currentFilter = when (filterType) {
             FilterType.ORIGINAL -> GPUImageFilter()
             FilterType.BLACK_WHITE -> GPUImageGrayscaleFilter()
@@ -73,8 +74,7 @@ class ImageProcessor(private val context: Context) {
         }
         
         gpuImage.setFilter(currentFilter)
-        currentBitmap = gpuImage.bitmapWithFilterApplied
-        return currentBitmap
+        return gpuImage.bitmapWithFilterApplied
     }
 
     private fun createVintageFilter(): GPUImageFilterGroup {
