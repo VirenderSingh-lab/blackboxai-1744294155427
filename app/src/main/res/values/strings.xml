@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App -->
+    <string name="app_name">Image Editor</string>
+    
+    <!-- Main Screen -->
+    <string name="title_edit_image">Edit Image</string>
+    <string name="btn_save">Save</string>
+    <string name="btn_back">Back</string>
+    
+    <!-- Filters -->
+    <string name="title_filters">Filters</string>
+    <string name="filter_original">Original</string>
+    <string name="filter_bw">B&amp;W</string>
+    <string name="filter_sepia">Sepia</string>
+    <string name="filter_vintage">Vintage</string>
+    <string name="filter_vignette">Vignette</string>
+    <string name="filter_bright">Bright</string>
+    <string name="filter_contrast">Contrast</string>
+    <string name="filter_vibrant">Vibrant</string>
+    <string name="filter_hue">Hue</string>
+    <string name="filter_sharpen">Sharpen</string>
+    <string name="filter_retro">Retro</string>
+    <string name="filter_film">Film</string>
+    <string name="filter_dramatic">Dramatic</string>
+    <string name="filter_golden">Golden</string>
+    <string name="filter_cinematic">Cinematic</string>
+    
+    <!-- Adjustments -->
+    <string name="title_adjustments">Adjustments</string>
+    <string name="adjustment_brightness">Brightness</string>
+    <string name="adjustment_contrast">Contrast</string>
+    <string name="adjustment_saturation">Saturation</string>
+    
+    <!-- Messages -->
+    <string name="msg_image_saved">Image saved successfully</string>
+    <string name="msg_error_saving">Error saving image</string>
+    <string name="msg_error_filter">Error applying filter</string>
+    <string name="msg_error_brightness">Error adjusting brightness</string>
+    <string name="msg_error_contrast">Error adjusting contrast</string>
+    <string name="msg_error_saturation">Error adjusting saturation</string>
+    <string name="msg_error_loading">Error loading image</string>
+    <string name="msg_error_permission">Storage permission is required</string>
+</resources>
