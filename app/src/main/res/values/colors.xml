@@ -32,4 +32,5 @@
     <color name="transparent">#00000000</color>
     <color name="scrim">#52000000</color>
     <color name="progress_background">#99000000</color>
+    <color name="gray_700">#616161</color>
 </resources>

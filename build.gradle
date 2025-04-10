@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        kotlin_version = '1.9.0'  // Updated Kotlin version
+        kotlin_version = '1.9.22'  // Updated Kotlin version
         compileSdkVersion = 34  // Updated to match dependency requirements
         minSdkVersion = 21
         targetSdkVersion = 33
@@ -23,12 +23,12 @@ tasks.register('clean', Delete) {
 // Configure Java compatibility
 allprojects {
     tasks.withType(JavaCompile).configureEach {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
     tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
         kotlinOptions {
-            jvmTarget = '17'
+            jvmTarget = '21'
         }
     }
 }
