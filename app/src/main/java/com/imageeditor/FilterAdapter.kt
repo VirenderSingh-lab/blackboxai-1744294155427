@@ -14,7 +14,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class FilterAdapter(
-    private val filters: List<FilterType>,
+    private val recyclerView: RecyclerView,
+    private val filters: List<FilterType>, 
     private val onFilterSelected: (FilterType) -> Unit
 ) : RecyclerView.Adapter<FilterAdapter.FilterViewHolder>() {
 
@@ -88,7 +89,7 @@ class FilterAdapter(
                 CoroutineScope(Dispatchers.IO).launch {
                     try {
                         val bitmap = imageProcessor.loadImage(uri)
-                        val previewBitmap = imageProcessor.applyFilter(filter)
+                        val previewBitmap = bitmap?.let { imageProcessor.applyFilter(filter, it) }
                         
                         withContext(Dispatchers.Main) {
                             it.preview.setImageBitmap(previewBitmap)
@@ -106,8 +107,16 @@ class FilterAdapter(
 
     private fun getViewHolder(position: Int): FilterViewHolder? {
         return try {
-            val recyclerView = itemView.parent as? RecyclerView
-            recyclerView?.findViewHolderForAdapterPosition(position) as? FilterViewHolder
+            // Find any existing view holder for the position
+            var holder: FilterViewHolder? = null
+            for (i in 0 until itemCount) {
+                val viewHolder = findViewHolderForAdapterPosition(i)
+                if (viewHolder is FilterViewHolder && viewHolder.adapterPosition == position) {
+                    holder = viewHolder
+                    break
+                }
+            }
+            holder
         } catch (e: Exception) {
             null
         }
